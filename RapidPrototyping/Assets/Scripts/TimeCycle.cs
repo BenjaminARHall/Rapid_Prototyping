@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-
+public enum TimeOfDay {MorningTime, DayTime, AfternoonTime, NightTime }
 public class TimeCycle : MonoBehaviour
 {
 
-    public enum TimeOfDay {MorningTime, DayTime, AfternoonTime, NightTime }
+    
 
     public bool ChangeTimeRandom;
     bool stopped;
@@ -67,6 +67,7 @@ public class TimeCycle : MonoBehaviour
                 lightSource.DOColor(nightColour, transitionTime);
                 break;
         }
+        GameEvents.ReportOnTimeOfDayChange(timeOfDay);
     }
 
    TimeOfDay GetTimeOfDay()
