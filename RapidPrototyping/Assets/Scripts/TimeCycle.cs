@@ -22,7 +22,7 @@ public class TimeCycle : MonoBehaviour
 
     [Header("Timers")]
     public int currentTime;
-    public float timeModifier;
+    public float timeModifier = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,28 +33,24 @@ public class TimeCycle : MonoBehaviour
         StartCoroutine(TickTock());
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.T))
-            ChangeTime();
-        if (Input.GetKeyDown(KeyCode.R))
-            ChangeTime();
-    }
+    
 
     void ChangeTime()
     {
-        if(ChangeTimeRandom)
-        {
-            timeOfDay = Utilities.RandomEnumValue<TimeOfDay>();
-        }
+        #region Old Time Stuff
+        //if(ChangeTimeRandom)
+        //{
+        //    timeOfDay = Utilities.RandomEnumValue<TimeOfDay>();
+        //}
 
-        if ((int)timeOfDay == Utilities.EnumLength(timeOfDay))
-            timeOfDay = 0;
-        else
-        timeOfDay++;
-
+        //if ((int)timeOfDay == Utilities.EnumLength(timeOfDay))
+        //    timeOfDay = 0;
+        //else
+        //timeOfDay++;
+        #endregion
         Debug.Log(Utilities.EnumToString(timeOfDay));
+
+        timeOfDay = GetTimeOfDay();
         
         switch (timeOfDay)
         {
@@ -73,6 +69,43 @@ public class TimeCycle : MonoBehaviour
         }
     }
 
+   TimeOfDay GetTimeOfDay()
+    {
+        switch(currentTime)
+        {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                return TimeOfDay.NightTime;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+                return TimeOfDay.MorningTime;
+            case 11:
+            case 12:
+            case 13:
+            case 14:
+            case 15:
+            case 16:
+                return TimeOfDay.DayTime;
+            case 17:
+            case 18:
+            case 19:
+            case 20:
+            case 21:
+                return TimeOfDay.AfternoonTime;
+            default:
+                return TimeOfDay.NightTime;
+
+        }
+
+    }
+
     IEnumerator TickTock()
     {
         while (!stopped)
@@ -82,6 +115,8 @@ public class TimeCycle : MonoBehaviour
                 currentTime = 0;
             else
                 currentTime++;
+
+            ChangeTime();
         }
     }
 
